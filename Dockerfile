@@ -37,6 +37,7 @@ COPY .env.example .env
 RUN composer install --no-dev --optimize-autoloader
 
 RUN php artisan key:generate &&\
-    php artisan optimize
+    php artisan optimize &&\
+    php artisan config:cache
 
 CMD ["supervisord", "-c", "/var/www/presentation/supervisord.conf"]
