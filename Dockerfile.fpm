@@ -11,17 +11,20 @@ RUN apt-get update &&\
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" &&\
     echo "max_input_vars=32" >> $PHP_INI_DIR/php.ini &&\
     echo "post_max_size=32K" >> $PHP_INI_DIR/php.ini &&\
-    echo "memory_limit=64M" >> $PHP_INI_DIR/php.ini &&\
+    echo "memory_limit=256M" >> $PHP_INI_DIR/php.ini &&\
     echo "file_uploads=Off" >> $PHP_INI_DIR/php.ini &&\
-    echo "opcache.enable = 1" >> $PHP_INI_DIR/php.ini &&\
-    echo "opcache.enable_cli = 1" >> $PHP_INI_DIR/php.ini &&\
-    echo "opcache.validate_timestamps = 0" >> $PHP_INI_DIR/php.ini &&\
-    echo "opcache.memory_consumption = 128" >> $PHP_INI_DIR/php.ini
+    echo "opcache.enable=1" >> $PHP_INI_DIR/php.ini &&\
+    echo "opcache.enable_cli=1" >> $PHP_INI_DIR/php.ini &&\
+    echo "opcache.validate_timestamps=0" >> $PHP_INI_DIR/php.ini &&\
+    echo "opcache.memory_consumption=256" >> $PHP_INI_DIR/php.ini &&\
+    echo "opcache.max_accelerated_files=65407" >> $PHP_INI_DIR/php.ini &&\
+    echo "opcache.jit=1255" >> $PHP_INI_DIR/php.ini &&\
+    echo "opcache.interned_strings_buffer=64" >> $PHP_INI_DIR/php.ini
 
 RUN echo "pm.max_children=150" >> /usr/local/etc/php-fpm.d/www.conf &&\
     echo "pm.start_servers=15" >> /usr/local/etc/php-fpm.d/www.conf &&\
     echo "pm.min_spare_servers=15" >> /usr/local/etc/php-fpm.d/www.conf &&\
-    echo "pm.max_spare_servers=35" >> /usr/local/etc/php-fpm.d/www.conf &&\
+    echo "pm.max_spare_servers=50" >> /usr/local/etc/php-fpm.d/www.conf &&\
     echo "pm.max_requests=500" >> /usr/local/etc/php-fpm.d/www.conf
 
 
