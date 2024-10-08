@@ -32,9 +32,11 @@ RUN curl -sSk https://getcomposer.org/installer | php -- --version=2.8.1  &&\
     mv composer.phar /usr/bin/composer
 
 COPY . .
+COPY .env.example .env
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan optimize
+RUN php artisan key:generate &&\
+    php artisan optimize
 
 CMD ["supervisord", "-c", "/var/www/presentation/supervisord.conf"]
