@@ -18,7 +18,7 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" &&\
     echo "opcache.validate_timestamps = 0" >> $PHP_INI_DIR/php.ini &&\
     echo "opcache.memory_consumption = 128" >> $PHP_INI_DIR/php.ini
 
-RUN echo "pm.max_children=50" >> /usr/local/etc/php-fpm.d/www.conf &&\
+RUN echo "pm.max_children=150" >> /usr/local/etc/php-fpm.d/www.conf &&\
     echo "pm.start_servers=15" >> /usr/local/etc/php-fpm.d/www.conf &&\
     echo "pm.min_spare_servers=15" >> /usr/local/etc/php-fpm.d/www.conf &&\
     echo "pm.max_spare_servers=35" >> /usr/local/etc/php-fpm.d/www.conf &&\
