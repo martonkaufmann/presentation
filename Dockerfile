@@ -10,20 +10,23 @@ RUN apt-get update &&\
     git \
     zip \
     unzip \
-    supervisor
+    supervisor \
+    libbrotli-dev
 
-RUN cp "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini" &&\
+RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" &&\
     echo "max_input_vars=32" >> $PHP_INI_DIR/php.ini &&\
     echo "post_max_size=32K" >> $PHP_INI_DIR/php.ini &&\
     echo "memory_limit=64M" >> $PHP_INI_DIR/php.ini &&\
     echo "file_uploads=Off" >> $PHP_INI_DIR/php.ini &&\
-    echo "date.timezone = Europe/Budapest" >> $PHP_INI_DIR/php.ini &&\
     echo "opcache.enable = 1" >> $PHP_INI_DIR/php.ini &&\
     echo "opcache.enable_cli = 1" >> $PHP_INI_DIR/php.ini &&\
     echo "opcache.validate_timestamps = 0" >> $PHP_INI_DIR/php.ini &&\
     echo "opcache.memory_consumption = 128" >> $PHP_INI_DIR/php.ini
 
 RUN docker-php-ext-install sockets pdo_mysql pcntl opcache
+
+RUN pecl install swoole &&\
+    docker-php-ext-enable swoole
 
 RUN curl -sSk https://getcomposer.org/installer | php -- --version=2.8.1  &&\
     mv composer.phar /usr/bin/composer
