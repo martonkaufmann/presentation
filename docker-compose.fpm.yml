@@ -1,0 +1,22 @@
+services:
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile.fpm
+
+    caddy:
+        image: caddy:2.8.4-alpine
+        volumes:
+            - caddy_data:/data
+            - caddy_config:/config
+            - ./Caddyfile.fpm:/etc/caddy/Caddyfile:ro
+            - .:/var/www/presentation
+        ports:
+            - 8000:8000
+            - 80:80
+            - 443:443
+
+volumes:
+    caddy_config:
+    caddy_data:
+

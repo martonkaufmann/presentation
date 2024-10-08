@@ -66,4 +66,9 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 `docker build -t presentation . --build-arg OCTANE_SERVER=roadrunner --no-cache`
+`docker build -t presentation . --build-arg OCTANE_SERVER=frankenphp --no-cache`
+`docker build -t presentation . --build-arg OCTANE_SERVER=swoole --no-cache`
+
 `docker container run -d -p 8000:8000 --name=presentation presentation`
+
+`docker compose -f docker-compose.fpm.yml up -d`

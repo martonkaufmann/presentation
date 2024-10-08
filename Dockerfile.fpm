@@ -1,7 +1,4 @@
-FROM php:8.3.12-cli-bookworm
-
-ARG OCTANE_SERVER
-ENV OCTANE_SERVER=$OCTANE_SERVER
+FROM php:8.3.12-fpm-bookworm
 
 WORKDIR /var/www/presentation
 
@@ -9,9 +6,7 @@ RUN apt-get update &&\
     apt-get install -y \
     git \
     zip \
-    unzip \
-    supervisor \
-    libbrotli-dev
+    unzip
 
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" &&\
     echo "max_input_vars=32" >> $PHP_INI_DIR/php.ini &&\
@@ -23,10 +18,7 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" &&\
     echo "opcache.validate_timestamps = 0" >> $PHP_INI_DIR/php.ini &&\
     echo "opcache.memory_consumption = 128" >> $PHP_INI_DIR/php.ini
 
-RUN docker-php-ext-install sockets pdo_mysql pcntl opcache
-
-RUN pecl install swoole &&\
-    docker-php-ext-enable swoole
+RUN docker-php-ext-install pdo_mysql opcache
 
 RUN curl -sSk https://getcomposer.org/installer | php -- --version=2.8.1  &&\
     mv composer.phar /usr/bin/composer
@@ -39,4 +31,6 @@ RUN composer install --no-dev --optimize-autoloader
 RUN php artisan key:generate &&\
     php artisan optimize
 
-CMD ["supervisord", "-c", "/var/www/presentation/supervisord.conf"]
+RUN chown -R www-data:www-data /var/www/presentation
+
+USER www-data
